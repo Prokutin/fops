@@ -1,0 +1,35 @@
+---
+- name: Install Node Exporter from official APT repository
+  become: true
+  apt:
+    name: prometheus-node-exporter
+    state: present
+    update_cache: yes
+
+- name: Start and enable Node Exporter
+  become: true
+  systemd:
+    name: prometheus-node-exporter
+    enabled: true
+    state: started
+    daemon_reload: yes
+
+- name: Ensure UFW is installed
+  become: true
+  apt:
+    name: ufw
+    state: present
+    update_cache: yes
+
+- name: Allow Node Exporter port 9100/tcp via UFW
+  become: true
+  ufw:
+    rule: allow
+    port: "9100"
+    proto: tcp
+
+- name: Ensure UFW is enabled
+  become: true
+  ufw:
+    state: enabled
+    policy: allow

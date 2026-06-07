@@ -10,4 +10,4 @@
 *.tfstate.backup
 
 terraform.tfvars
-key.json
+cloud-init.yml
