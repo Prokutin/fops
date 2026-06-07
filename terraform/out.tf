@@ -40,19 +40,19 @@ resource "local_file" "inventory" {
   web1 ansible_host=${yandex_compute_instance.web[0].network_interface.0.ip_address}
   web2 ansible_host=${yandex_compute_instance.web[1].network_interface.0.ip_address}
 
-  [prometheus_group]
+  [prometheus]
   prometheus ansible_host=${yandex_compute_instance.prometheus.network_interface[0].ip_address}
 
-  [grafana_group]
+  [grafana]
   grafana ansible_host=${yandex_compute_instance.grafana.network_interface[0].ip_address}
 
-  [elasticsearch_group]
+  [elasticsearch]
   elasticsearch ansible_host=${yandex_compute_instance.elasticsearch.network_interface[0].ip_address}
 
-  [kibana_group]
+  [kibana]
   kibana ansible_host=${yandex_compute_instance.kibana.network_interface[0].ip_address} public_ip=${yandex_compute_instance.kibana.network_interface[0].nat_ip_address}
 
-  [web:vars]
+  [all:vars]
   ansible_user=dvp
   ansible_ssh_private_key_file=~/.ssh/id_ed25519
   ansible_ssh_common_args='-o ProxyCommand="ssh -p 22 -W %h:%p -q dvp@${yandex_compute_instance.bastion.network_interface.0.nat_ip_address}"'
